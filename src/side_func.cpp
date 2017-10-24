@@ -8,15 +8,36 @@
 // this pkg
 #include <side_pkg/side_func.h>
 
+namespace bsc = basic_side_classes;
+char bsc::UsefulCharString::get_newline_char()
+{
+	  return newline_;
+}
+char bsc::UsefulCharString::get_tab_char()
+{
+	  return tab_;
+}
+char bsc::UsefulCharString::get_comment_char()
+{
+	  return comment_;
+}
+
+std::string bsc::UsefulCharString::get_invalid_input_str()
+{
+	  return invalid_input_str_;
+}
+// End namespace "basic_side_classes"
+
 
 namespace basic_side_functions
 {
   void countdown_sec(int n_sec)
   {
+	std::cout << "countdown: " << n_sec << std::endl;
 	for(int i = 0; i < n_sec; i++)
     {
-		std::cout << "countdown: " << n_sec-i << std::endl;
 		ros::Duration(1.0).sleep();
+		std::cout << "countdown: " << n_sec-i-1 << std::endl;
 	}
   }
 
@@ -435,6 +456,7 @@ namespace basic_side_functions
 
 namespace geometry_side_functions
 {
+  //Other namespaces:
   namespace bsf = basic_side_functions;
 
   geometry_msgs::Vector3 makeVector3(double x, double y, double z)

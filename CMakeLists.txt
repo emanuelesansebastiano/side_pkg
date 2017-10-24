@@ -8,6 +8,7 @@ add_definitions(--std=c++11)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  tf_conversions
   roscpp
   rospy
   std_msgs
@@ -133,6 +134,8 @@ add_library(side_func src/side_func.cpp)
 
 ## Declare a C++ executable
 # add_executable(side_functions src/side_functions.cpp)
+add_executable(script_test_sf src/script_test_sf.cpp)
+target_link_libraries(script_test_sf side_func ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

@@ -15,6 +15,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <boost/math/constants/constants.hpp>
+////#include <geometry_msgs/PointStamped.h>
 #include <tf_conversions/tf_kdl.h>
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -32,6 +33,38 @@
  *	ros::AsyncSpinner spinner(1);
  *  spinner.start();
  */
+
+namespace basic_side_classes
+{
+  //brief: Class to sum up all the most used char and string
+  class UsefulCharString
+  {
+  	  public:
+	  	  UsefulCharString()
+  	  	  {};
+	  	  ~UsefulCharString()
+	  	  {};
+	  	  //brief: set of function to get common chars to manage (write and read) .txt files
+	  	  char get_newline_char(void);
+	  	  char get_tab_char(void);
+	  	  char get_comment_char(void);
+
+	  	  //brief: set of function to get common strings to communicate with the user
+	  	  std::string get_invalid_input_str(void);
+
+  	  protected:
+	  	  //brief: set of common chars used to generate and read .txt files
+	  	  char newline_ = '\n';
+	  	  char tab_ = '\t';
+	  	  char comment_ = '%';
+
+	  	  //brief: set of common strings to communicate with the user
+	      std::string invalid_input_str_ = "Error: An invalid input has been inserted!";
+
+  };
+
+// End namespace "basic_side_classes"
+}
 
 
 namespace basic_side_functions
