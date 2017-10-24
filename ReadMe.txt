@@ -1,7 +1,6 @@
 # side_pkg
 
 Author: Emanuele Sansebastiano
-
 Github page: https://github.com/emanuelesansebastiano
 
 Date: August, 2017
