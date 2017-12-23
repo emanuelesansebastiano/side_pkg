@@ -9,23 +9,23 @@
 #include <side_pkg/side_func.h>
 
 namespace bsc = basic_side_classes;
-char bsc::UsefulCharString::get_newline_char()
-{
+  char bsc::UsefulCharString::get_newline_char()
+  {
 	  return newline_;
-}
-char bsc::UsefulCharString::get_tab_char()
-{
+  }
+  char bsc::UsefulCharString::get_tab_char()
+  {
 	  return tab_;
-}
-char bsc::UsefulCharString::get_comment_char()
-{
+  }
+  char bsc::UsefulCharString::get_comment_char()
+  {
 	  return comment_;
-}
+  }
 
-std::string bsc::UsefulCharString::get_invalid_input_str()
-{
+  std::string bsc::UsefulCharString::get_invalid_input_str()
+  {
 	  return invalid_input_str_;
-}
+  }
 // End namespace "basic_side_classes"
 
 
@@ -111,6 +111,22 @@ namespace basic_side_functions
 
 	  return final_vector;
   }
+
+  void matrix2DPRINT(std::vector <std::vector<double> > mA)
+  {
+	  std::cout << std::endl;
+	  for(int i = 0; i < mA.size(); i++)
+	  {
+		  std::cout << " | ";
+		  for(int y = 0; y < mA[i].size(); y++)
+		  {
+			  std::cout << mA[i][y] << " | ";
+		  }
+		  std::cout << std::endl;
+	  }
+	  std::cout << std::endl;
+  }
+
 
   bool matrix2DSUM(std::vector <std::vector<double> > mA, std::vector <std::vector<double> > mB, std::vector <std::vector<double> > &mRes)
   {
@@ -350,7 +366,7 @@ namespace basic_side_functions
 	  return false;
   }
 
-  bool matrix2Dprod(std::vector <std::vector<double> > mA, std::vector <std::vector<double> > mB, std::vector <std::vector<double> > &mProd)
+  bool matrix2DPROD(std::vector <std::vector<double> > mA, std::vector <std::vector<double> > mB, std::vector <std::vector<double> > &mProd)
   {
 	  int temp_int;
 	  double temp_double;
@@ -402,6 +418,239 @@ namespace basic_side_functions
 			  mProd[i][j] = temp_double;
 		  }
   	  }
+
+	  return true;
+
+	  //exit return in case something is not correct
+	  return_0:
+	  return false;
+  }
+
+  bool matrix2DTRAN(std::vector <std::vector <double> > &mA)
+  {
+	  int size1, size2;
+	  double pivot, tmp;
+	  std::vector <std::vector <double> > mT;
+
+	  //function check
+	  //matrix size check
+	  size1 = mA.size();
+	  size2 = mA[0].size();
+	  for(int i = 0; i < mA.size(); i++)
+	  {
+		  if(mA[i].size() != size2){
+			  std::cout << "Error: the raws of the first matrix have NOT constant size!" << std::endl;
+			  goto return_0;
+		  }
+	  }
+
+	  //main prog
+	  //variables generation
+	  mT = mA;
+	  mA.clear();
+	  mA.resize(size2);
+	  for(int i = 0; i < mA.size(); i++)
+	  {
+		  mA[i].resize(size1);
+	  }
+
+	  //actual transposition
+	  for(int i = 0; i < size1; i++)
+	  {
+		  for(int y = 0; y < size2; y++)
+		  {
+			  mA[y][i] = mT[i][y];
+		  }
+	  }
+
+	  return true;
+
+	  //exit return in case something is not correct
+	  return_0:
+	  return false;
+}
+
+  bool matrix2DTRIANup(std::vector <std::vector <double> > &mA)
+  {
+	  int size1, size2;
+	  double pivot, tmp;
+
+	  //function check
+	  //matrix size check
+	  size1 = mA.size();
+	  size2 = mA[0].size();
+	  if(size1 != size2)
+	  {
+		  std::cout << "Error: the matrix must be square; it is a "<< size1 << "X" << size2 << "!" << std::endl;
+		  goto return_0;
+	  }
+	  for(int i = 0; i < mA.size(); i++)
+	  {
+		  if(mA[i].size() != size2){
+			  std::cout << "Error: the raws of the first matrix have NOT constant size!" << std::endl;
+			  goto return_0;
+		  }
+	  }
+
+	  //main prog
+	  for(int i = 0; i < size2; i++)
+	  {
+		  // not to exceed matrix size (ex. M[2x3])
+		  if(i == size1)
+			  break;
+		  //look for a raw having non-zero value in the column "i"
+		  if(mA[i][i] == 0)
+		  {
+			  pivot = 0.0;
+			  for(int y = i +1; y < size1; y++)
+			  {
+				  if(mA[y][i] != 0)
+				  {
+					  pivot = mA[y][i];
+					  for(int h = i; h < size2; h++)
+					  {
+						  mA[i][h] = mA[i][h] + mA[y][h];
+					  }
+					  break;
+				  }
+			  }
+		  }else{
+			  pivot = mA[i][i];
+		  }
+		  //go on if there are just zero values
+		  if(pivot == 0.0)
+		  {
+			  continue;
+		  }
+		  //convert all the values below the pivot to zero
+		  for(int y = i +1; y < size1; y++)
+		  {
+			  if(mA[y][i] != 0)
+			  {
+				  tmp = -mA[y][i]/pivot;
+				  for(int h = i; h < size2; h++)
+				  {
+					  mA[y][h] = mA[y][h] + mA[i][h]*tmp;
+				  }
+			  }
+		  }
+	  }
+
+	  return true;
+
+  	  //exit return in case something is not correct
+  	  return_0:
+  	  return false;
+  }
+
+  bool matrix2DDET(std::vector <std::vector <double> > mA, double &det)
+  {
+	  bool check;
+	  int m_size;
+
+	  //function check
+	  check = matrix2DTRIANup(mA);
+	  if(check == false)
+	  {
+		  std::cout << "Error: something went wrong during the matrix diagonalization." << std::endl;
+		  goto return_0;
+	  }
+	  //matrix size check
+	  m_size = mA[0].size();
+	  for(int i = 0; i < mA.size(); i++)
+	  {
+		  if(mA[i].size() != m_size){
+			  std::cout << "Error: the matrix raws have NOT constant size!" << std::endl;
+			  goto return_0;
+		  }
+	  }
+	  if(mA.size() != mA[0].size())
+	  {
+		  std::cout << "Error: the matrix is not square!" << std::endl;
+		  goto return_0;
+	  }
+
+	  //main prog
+	  det = 1.0;
+	  for(int i = 0; i < m_size; i++)
+	  {
+		  det = det * mA[i][i];
+	  }
+
+	  return true;
+
+	  //exit return in case something is not correct
+	  return_0:
+	  return false;
+  }
+
+  bool matrix2DINVERT(std::vector <std::vector <double> > &mA)
+  {
+	  bool check;
+	  int m_size, tmp1, tmp2;
+	  double det, det_tmp;
+	  //temp matrix generation
+	  std::vector<std::vector<double>> mT;
+	  mT.resize(mA.size()-1);
+	  for(int i = 0; i < mT.size(); i++)
+	  {
+		  mT[i].resize(mA[0].size()-1);
+	  }
+	  std::vector<std::vector<double>> mINV;
+	  mINV = mA;
+
+
+	  //function check
+	  //matrix size check
+	  m_size = mA[0].size();
+	  for(int i = 0; i < mA.size(); i++)
+	  {
+		  if(mA[i].size() != m_size){
+			  std::cout << "Error: the matrix raws have NOT constant size!" << std::endl;
+			  goto return_0;
+		  }
+	  }
+	  if(mA.size() != mA[0].size())
+	  {
+		  std::cout << "Error: the matrix is not square!" << std::endl;
+		  goto return_0;
+	  }
+
+	  //check the invertibility of the matrix
+	  check = matrix2DDET(mA, det);
+	  if(check == false)
+	  {
+		  std::cout << "Warning: the matrix is not invertible!" << std::endl;
+		  goto return_0;
+	  }
+
+	  //main prog
+	  for(int h = 0; h < mA.size(); h++)
+	  {
+		  for(int v = 0; v < mA[h].size(); v++)
+		  {
+			  for(int i = 0; i < mT.size(); i++)
+			  {
+				  for(int y = 0; y < mT[i].size(); y++)
+				  {
+					  if(i < h)
+					  {	  tmp1 = i;}
+					  else
+					  {	  tmp1 = i +1;}
+					  if(y < v)
+					  {   tmp2 = y;}
+					  else
+					  {   tmp2 = y +1;}
+					  mT[i][y] = mA[tmp1][tmp2];
+				  }
+			  }
+			  matrix2DDET(mT, det_tmp);
+			  mINV[h][v] = std::pow(-1,h+v)*det_tmp/det;
+		  }
+	  }
+
+	  matrix2DTRAN(mINV);
+	  mA = mINV;
 
 	  return true;
 
@@ -772,7 +1021,7 @@ namespace geometry_side_functions
 	  return equal;
   }
 
-  std::vector <std::vector <double> > point2matrix_gen(geometry_msgs::Vector3 point)
+  /*std::vector <std::vector <double> > point2matrix_gen(geometry_msgs::Vector3 point)
     {
   	  //initialization
   	  std::vector <std::vector <double> > matrixP; matrixP.resize(4);
@@ -822,7 +1071,7 @@ namespace geometry_side_functions
   	  point.z = matrix[2][0];
 
   	  return point;
-    }
+    }*/
 
   std::vector <std::vector <double> > translation_matrix(geometry_msgs::Vector3 translation)
   {
@@ -842,6 +1091,50 @@ namespace geometry_side_functions
 	  matrixT[2][3] = translation.z;
 
 	  return matrixT;
+  }
+
+  geometry_msgs::Vector3 transMatrix2XYZ(std::vector <std::vector <double> > matrix)
+  {
+	  geometry_msgs::Vector3 trans_vector;
+
+  	  //initialization check
+	  if(matrix.size() != 4)
+	  {
+		  std::cout << "Error: the number of raws are supposed to be 4!" << std::endl;
+		  std::cout << "A default null vector has been returned..." << std::endl;
+		  return trans_vector;
+	  }
+	  for(int i = 0; i < 4; i++)
+	  {
+		  if(matrix[i].size() != 4)
+		  {
+			  std::cout << "Error: the raw number " << i << " is supposed to be composed by just 1 element!" << std::endl;
+			  std::cout << "A default null vector has been returned..." << std::endl;
+			  return trans_vector;
+		  }
+	  }
+	  if(matrix[3][3] != 1.0)
+	  {
+		  std::cout << "Error: the last element is supposed to be equal to 1.0!" << std::endl;
+		  std::cout << "A default null vector has been returned..." << std::endl;
+		  return trans_vector;
+	  }
+	  for(int i = 0; i < 3; i++)
+	  {
+		  if(matrix[3][i] != 0.0)
+		  {
+			  std::cout << "Error: the values contained in the cells [3," << i << "] is supposed to be ZERO!" << std::endl;
+			  std::cout << "A default null vector has been returned..." << std::endl;
+			  return trans_vector;
+		  }
+	  }
+
+  	  //main prog
+	  trans_vector.x = matrix[0][3];
+	  trans_vector.y = matrix[1][3];
+	  trans_vector.z = matrix[2][3];
+
+  	  return trans_vector;
   }
 
   std::vector <std::vector <double> > rotational_matrix_X(double angle_X, bool rad)
@@ -934,8 +1227,8 @@ namespace geometry_side_functions
 	  std::vector <std::vector <double> > matrixY = rotational_matrix_Y(angles.y);
 	  std::vector <std::vector <double> > matrixZ = rotational_matrix_Z(angles.z);
 
-	  bsf::matrix2Dprod(matrixZ,matrixY,matrixR);
-	  bsf::matrix2Dprod(matrixR,matrixX,matrixR);
+	  bsf::matrix2DPROD(matrixZ,matrixY,matrixR);
+	  bsf::matrix2DPROD(matrixR,matrixX,matrixR);
 
 	  return matrixR;
   }
@@ -954,8 +1247,8 @@ namespace geometry_side_functions
 	  std::vector <std::vector <double> > matrixY = rotational_matrix_Y(angles.y);
 	  std::vector <std::vector <double> > matrixZ = rotational_matrix_Z(angles.z);
 
-	  bsf::matrix2Dprod(matrixZ,matrixY,matrixR);
-	  bsf::matrix2Dprod(matrixR,matrixX,matrixR);
+	  bsf::matrix2DPROD(matrixZ,matrixY,matrixR);
+	  bsf::matrix2DPROD(matrixR,matrixX,matrixR);
 
 	  return matrixR;
   }
@@ -988,9 +1281,9 @@ namespace geometry_side_functions
 	  }
 	  for(int i = 0; i < 3; i++)
 	  {
-		  if(matrix[3][i] != 0.0 || matrix[i][3] != 0.0)
+		  if(matrix[3][i] != 0.0)
 		  {
-			  std::cout << "Error: the values contained in the cells [" << i << ",3] and [3," << i << "] is supposed to be ZERO!" << std::endl;
+			  std::cout << "Error: the values contained in the cells [3," << i << "] is supposed to be ZERO!" << std::endl;
 			  std::cout << "A default null vector has been returned..." << std::endl;
 			  return rot_vector;
 		  }

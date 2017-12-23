@@ -97,6 +97,9 @@ namespace basic_side_functions
   //brief: Function to cluster to vector in one vector
   std::vector<double> vector_cluster_double(std::vector<double> left, std::vector<double> right);
 
+  //brief: Function to print on video the matrix mA
+  void matrix2DPRINT(std::vector <std::vector<double> > mA);
+
   //brief: Set of function to Sum or Subtract two matrixes having 2 or 3 dimensions
   bool matrix2DSUM(std::vector <std::vector<double> > mA, std::vector <std::vector<double> > mB, std::vector <std::vector<double> > &mRes);
   bool matrix2DSUBTRACTION(std::vector <std::vector<double> > mA, std::vector <std::vector<double> > mB, std::vector <std::vector<double> > &mRes);
@@ -104,7 +107,19 @@ namespace basic_side_functions
   bool matrix3DSUBTRACTION(std::vector<std::vector <std::vector<double> > > mA, std::vector<std::vector <std::vector<double> > > mB, std::vector<std::vector <std::vector<double> > > &mRes);
 
   //brief: Function to make the product of two 2D matrixes defined as vector of vectors of double
-  bool matrix2Dprod(std::vector <std::vector <double> > mA, std::vector <std::vector<double> > mB, std::vector <std::vector<double> > &mProd);
+  bool matrix2DPROD(std::vector <std::vector <double> > mA, std::vector <std::vector<double> > mB, std::vector <std::vector<double> > &mProd);
+
+  //brief: Function to transpose mA (not just squared ones)
+  bool matrix2DTRAN(std::vector <std::vector <double> > &mA);
+
+  //brief: Function to transform mA to its upper triangular matrix (square matrix)
+  bool matrix2DTRIANup(std::vector <std::vector <double> > &mA);
+
+  //brief: Function to calculate the determinant of a square 2D matrix
+  bool matrix2DDET(std::vector <std::vector <double> > mA, double &det);
+
+  //brief: Function to transform mA to its inverse matrix (square matrix)
+  bool matrix2DINVERT(std::vector <std::vector <double> > &mA);
 
   //brief: This function compares two vectors of double by a threshold
   bool VectorEquivalence_theshold(std::vector<double> A, std::vector<double> B, double threshold = 0.0);
@@ -170,14 +185,17 @@ namespace geometry_side_functions
   //       Pose full check
   bool PoseEquivalence_theshold(geometry_msgs::Pose A, geometry_msgs::Pose B, double threshold_XYZ = 0.0, double threshold_Quat = 0.0);
 
-  //brief:: Function to easy generate point matrix representing a point in the 3D
+  /*//brief:: Function to easy generate point matrix representing a point in the 3D
   std::vector <std::vector <double> > point2matrix_gen(geometry_msgs::Vector3 point);
 
   //brief: Function to easy convert a matrix representing a point in 3D into a vector3 data
-  geometry_msgs::Vector3 matrix2point_gen(std::vector <std::vector <double> > matrix);
+  geometry_msgs::Vector3 matrix2point_gen(std::vector <std::vector <double> > matrix);*/
 
   //brief: Function to generate the translation matrix from the translation vector
   std::vector <std::vector <double> > translation_matrix(geometry_msgs::Vector3 translation);
+
+  //brief:: Function to extract the translation values from the full transfer matrix
+  geometry_msgs::Vector3 transMatrix2XYZ(std::vector <std::vector <double> > matrix);
 
   //brief: Set of function to generate the rotational matrix around every single axis
   //       this rotation corresponds to the RPY
@@ -192,11 +210,11 @@ namespace geometry_side_functions
   //brief:: Function to generate the full rotational matrix from the RPY axis rotation starting from quaternions
   std::vector <std::vector <double> > Quaternion2rotMatrix(geometry_msgs::Quaternion quat);
 
-  //brief:: Function to extract the RPY axis rotation from the full rotational matrix
+  //brief:: Function to extract the RPY axis rotation from the full transfer matrix
   //	    if the angle unit you want is NOT radiant put 'rad = false' to convert
   geometry_msgs::Vector3 rotMatrix2RPY(std::vector<std::vector <double> > matrix, bool rad = true);
 
-  //brief:: Function to extract the quaternion of the axis rotation from the full rotational matrix
+  //brief:: Function to extract the quaternion of the axis rotation from the full transfer matrix
   geometry_msgs::Quaternion rotMatrix2Quaternion( std::vector <std::vector <double> > matrix);
 
 // End namespace "geometry_side_functions"
