@@ -439,7 +439,7 @@ namespace basic_side_functions
 	  for(int i = 0; i < mA.size(); i++)
 	  {
 		  if(mA[i].size() != size2){
-			  std::cout << "Error: the raws of the first matrix have NOT constant size!" << std::endl;
+			  std::cout << "Error: the raws of the matrix have NOT constant size!" << std::endl;
 			  goto return_0;
 		  }
 	  }
@@ -1073,7 +1073,7 @@ namespace geometry_side_functions
   	  return point;
     }*/
 
-  std::vector <std::vector <double> > translation_matrix(geometry_msgs::Vector3 translation)
+  std::vector <std::vector <double> > XYZ2transMatrix(geometry_msgs::Vector3 translation)
   {
 	  //initialization
 	  std::vector <std::vector <double> > matrixT; matrixT.resize(4);
@@ -1123,7 +1123,7 @@ namespace geometry_side_functions
 	  {
 		  if(matrix[3][i] != 0.0)
 		  {
-			  std::cout << "Error: the values contained in the cells [3," << i << "] is supposed to be ZERO!" << std::endl;
+			  std::cout << "Error: the value contained in the cell [3," << i << "] is supposed to be ZERO!" << std::endl;
 			  std::cout << "A default null vector has been returned..." << std::endl;
 			  return trans_vector;
 		  }
@@ -1253,7 +1253,7 @@ namespace geometry_side_functions
 	  return matrixR;
   }
 
-  geometry_msgs::Vector3 rotMatrix2RPY( std::vector <std::vector <double> > matrix, bool rad)
+  geometry_msgs::Vector3 transMatrix2RPY( std::vector <std::vector <double> > matrix, bool rad)
   {
 	  geometry_msgs::Vector3 rot_vector;
 
@@ -1279,15 +1279,6 @@ namespace geometry_side_functions
 		  std::cout << "A default null vector has been returned..." << std::endl;
 		  return rot_vector;
 	  }
-	  for(int i = 0; i < 3; i++)
-	  {
-		  if(matrix[3][i] != 0.0)
-		  {
-			  std::cout << "Error: the values contained in the cells [3," << i << "] is supposed to be ZERO!" << std::endl;
-			  std::cout << "A default null vector has been returned..." << std::endl;
-			  return rot_vector;
-		  }
-	  }
 
   	  //main prog
 	  rot_vector.x = atan2(matrix[2][1], matrix[2][2]);
@@ -1305,7 +1296,7 @@ namespace geometry_side_functions
   	  return rot_vector;
   }
 
-  geometry_msgs::Quaternion rotMatrix2Quaternion(std::vector<std::vector <double> > matrix)
+  geometry_msgs::Quaternion transMatrix2Quaternion(std::vector<std::vector <double> > matrix)
   {
 	  geometry_msgs::Vector3 rot_vector;
 	  geometry_msgs::Quaternion quat_vec;
@@ -1331,15 +1322,6 @@ namespace geometry_side_functions
 		  std::cout << "Error: the last element is supposed to be equal to 1.0!" << std::endl;
 		  std::cout << "A default null vector has been returned..." << std::endl;
 		  return quat_vec;
-	  }
-	  for(int i = 0; i < 3; i++)
-	  {
-		  if(matrix[3][i] != 0.0 || matrix[i][3] != 0.0)
-		  {
-			  std::cout << "Error: the values contained in the cells [" << i <<",3] and [3," << i << "] is supposed to be ZERO!" << std::endl;
-			  std::cout << "A default null vector has been returned..." << std::endl;
-			  return quat_vec;
-		  }
 	  }
 
   	  //main prog

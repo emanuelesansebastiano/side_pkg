@@ -22,7 +22,7 @@
 // VALUES MODIFIABLE BY THE USER \\
 
 // Common define values
-#define	std_time					0.01
+#define	std_time					0.01  //[s]
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -192,7 +192,7 @@ namespace geometry_side_functions
   geometry_msgs::Vector3 matrix2point_gen(std::vector <std::vector <double> > matrix);*/
 
   //brief: Function to generate the translation matrix from the translation vector
-  std::vector <std::vector <double> > translation_matrix(geometry_msgs::Vector3 translation);
+  std::vector <std::vector <double> > XYZ2transMatrix(geometry_msgs::Vector3 translation);
 
   //brief:: Function to extract the translation values from the full transfer matrix
   geometry_msgs::Vector3 transMatrix2XYZ(std::vector <std::vector <double> > matrix);
@@ -212,10 +212,10 @@ namespace geometry_side_functions
 
   //brief:: Function to extract the RPY axis rotation from the full transfer matrix
   //	    if the angle unit you want is NOT radiant put 'rad = false' to convert
-  geometry_msgs::Vector3 rotMatrix2RPY(std::vector<std::vector <double> > matrix, bool rad = true);
+  geometry_msgs::Vector3 transMatrix2RPY(std::vector<std::vector <double> > matrix, bool rad = true);
 
   //brief:: Function to extract the quaternion of the axis rotation from the full transfer matrix
-  geometry_msgs::Quaternion rotMatrix2Quaternion( std::vector <std::vector <double> > matrix);
+  geometry_msgs::Quaternion transMatrix2Quaternion( std::vector <std::vector <double> > matrix);
 
 // End namespace "geometry_side_functions"
 }
